@@ -11,13 +11,23 @@
 #include <QGraphicsTextItem>
 #include <QDebug>
 
+class Node{
+    int x;
+    int y;
+    //int count_graph_edge;
+public:
+    void setX(int x){this->x = x;}
+    void setY(int y){this->y = y;}
+    int getX(){return x;}
+    int getY(){return y;}
+};
+
 class Widget : public QWidget{
     Q_OBJECT
-    int count_of_nodes;
+    int count_nodes;
     bool** connection_matrix;
     const int radius = 8;
-    int* mas_X;
-    int* mas_Y;
+    class Node* masNodes;
     int current_node;
     QGraphicsScene* scene;
     QGraphicsView* view;
