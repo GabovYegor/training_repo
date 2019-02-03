@@ -15,7 +15,7 @@ bool** createConnectionMatrix(QString file_name, int& count_nodes){
     for(int i = 0; i < count_nodes; ++i){
         str = in_file.readLine();
         qDebug() << str;
-        connection_matrix[i] = new bool[i+1]; // треугольный массив - выигрыш в памяти в 2 раза - диагональ
+        connection_matrix[i] = new bool[count_nodes];
         for(int j = 0, k = 0; j < str.length(); ++j){
             if(str[j] == "1"){
                 connection_matrix[i][k] = true;
@@ -30,16 +30,13 @@ bool** createConnectionMatrix(QString file_name, int& count_nodes){
     in_file.close();
     return connection_matrix;
 }
-/* силовой алгоритм: аналог заряда
- * чем больше связей, тем ближе к центру
- */
 
 int main(int argc, char *argv[]){
     QApplication a(argc, argv);
     srand(time(nullptr));
     bool** connection_matrix;
     int count_nodes = 0;
-    connection_matrix = createConnectionMatrix("test1.txt", count_nodes);
+    connection_matrix = createConnectionMatrix("test2.txt", count_nodes);
     Widget w(nullptr, connection_matrix, count_nodes);
     w.show();
     return a.exec();
