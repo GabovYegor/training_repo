@@ -34,7 +34,7 @@ class Widget : public QWidget{
     double const PI = 3.14159;
     int count_nodes;
     bool** connection_matrix;
-    const int radius = 8;
+    const int radius = 3;
     class Node* masNodes;
     int current_node;
     QGraphicsScene* scene;

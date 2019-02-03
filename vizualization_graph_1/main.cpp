@@ -36,7 +36,7 @@ int main(int argc, char *argv[]){
     srand(time(nullptr));
     bool** connection_matrix;
     int count_nodes = 0;
-    connection_matrix = createConnectionMatrix("test2.txt", count_nodes);
+    connection_matrix = createConnectionMatrix("test5.txt", count_nodes);
     Widget w(nullptr, connection_matrix, count_nodes);
     w.show();
     return a.exec();
