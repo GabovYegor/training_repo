@@ -11,6 +11,7 @@
 #include <QGraphicsTextItem>
 #include <QDebug>
 #include <cmath>
+#include <vector>
 
 #define PI 3.14159
 
@@ -22,6 +23,8 @@ private:
     int node_num;
     double nodeAngle;
     int nodeR;
+public:
+    bool isPrint = false;
 public:
     void setX(int x){this->x = x;}
     void setY(int y){this->y = y;}
@@ -50,8 +53,8 @@ class Widget : public QWidget{
     QBrush brush;
     QPushButton* btn_close;
     void initMasNodes();
-    void printRandomGraph();
     void printEllipseGraph();
+    void printEllipseGraph2();
     void printEllipseNodes();
     void printEllipseLines();
 public:
