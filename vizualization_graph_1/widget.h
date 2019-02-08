@@ -12,26 +12,33 @@
 #include <QDebug>
 #include <cmath>
 
+#define PI 3.14159
+
 class Node{
 private:
     int x;
     int y;
     int degree;
-    int node_num; // написать геттер, сеттер
+    int node_num;
+    double nodeAngle;
+    int nodeR;
 public:
     void setX(int x){this->x = x;}
     void setY(int y){this->y = y;}
     void setDegree(int degree){this->degree = degree;}
     void setNode_num(int node_num){this->node_num = node_num;}
+    void setNodeR(int nodeR){this->nodeR = nodeR;}
+    void setNodeAngle(double nodeAngle){this->nodeAngle = nodeAngle;}
     int getX(){return x;}
     int getY(){return y;}
     int getDegree(){return degree;}
     int getNode_num(){return node_num;}
+    int getNodeR(){return nodeR;}
+    double getNodeAngle(){return nodeAngle;}
 };
 
 class Widget : public QWidget{
     Q_OBJECT
-    double const PI = 3.14159;
     int count_nodes;
     bool** connection_matrix;
     const int radius = 3;
@@ -45,6 +52,8 @@ class Widget : public QWidget{
     void initMasNodes();
     void printRandomGraph();
     void printEllipseGraph();
+    void printEllipseNodes();
+    void printEllipseLines();
 public:
     Widget(QWidget *parent, bool**, int);
     ~Widget();
