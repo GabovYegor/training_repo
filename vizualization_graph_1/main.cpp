@@ -4,7 +4,7 @@
 #include <QDebug>
 #include <QString>
 
-bool** createConnectionMatrix(QString file_name, int& count_nodes){
+bool** createConnectionMatrix(char* file_name, int& count_nodes){
     QString str;
     bool** connection_matrix;
     QFile in_file(file_name); // лежит в директории сборки
@@ -35,7 +35,10 @@ int main(int argc, char *argv[]){
     srand(time(nullptr));
     bool** connection_matrix;
     int count_nodes = 0;
-    connection_matrix = createConnectionMatrix("test6.txt", count_nodes);
+    if(argc == 2)
+        connection_matrix = createConnectionMatrix(argv[1], count_nodes);
+    else
+        connection_matrix = createConnectionMatrix("100nodes.txt", count_nodes);
     Widget w(nullptr, connection_matrix, count_nodes);
     w.show();
     return a.exec();
