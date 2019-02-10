@@ -24,8 +24,7 @@ private:
     double nodeAngle;
     int nodeR;
 public:
-    bool isPrint = false;
-public:
+    bool isPrint;
     void setX(int x){this->x = x;}
     void setY(int y){this->y = y;}
     void setDegree(int degree){this->degree = degree;}
@@ -54,7 +53,6 @@ class Widget : public QWidget{
     QPushButton* btn_close;
     void initMasNodes();
     void printEllipseGraph();
-    void printEllipseGraph3();
     void printEllipseNodes();
     void printEllipseLines();
 public:

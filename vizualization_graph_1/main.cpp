@@ -14,7 +14,6 @@ bool** createConnectionMatrix(QString file_name, int& count_nodes){
     connection_matrix = new bool*[count_nodes];
     for(int i = 0; i < count_nodes; ++i){
         str = in_file.readLine();
-        qDebug() << str;
         connection_matrix[i] = new bool[count_nodes];
         for(int j = 0, k = 0; j < str.length(); ++j){
             if(str[j] == "1"){
@@ -36,7 +35,7 @@ int main(int argc, char *argv[]){
     srand(time(nullptr));
     bool** connection_matrix;
     int count_nodes = 0;
-    connection_matrix = createConnectionMatrix("test3.txt", count_nodes);
+    connection_matrix = createConnectionMatrix("test6.txt", count_nodes);
     Widget w(nullptr, connection_matrix, count_nodes);
     w.show();
     return a.exec();

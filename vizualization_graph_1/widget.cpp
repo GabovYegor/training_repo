@@ -1,11 +1,21 @@
 #include "widget.h"
 
-void Widget::printEllipseGraph3(){
-    int lengthEllipseNodes = 50;
+/**
+    возможное улучшение - располагать соединенные вершины на уровне рядом
+    но тогда может разрушиться основная идея
+    Проблемы:
+    1) мест на уровне не меньше чем на предыдущем
+        если вершин меньше чем на предыдущем уровне - последний уровень - записать оставшиеся вершины
+    2) правильно регулировать радиус
+*/
+
+void Widget::printEllipseGraph(){
+    int lengthEllipseNodes = 150;
     masNodes[0].setNodeR(0);
     masNodes[0].setNodeAngle(0); // print centre node
     masNodes[0].setX(-radius + masNodes[0].getNodeR() * std::cos(masNodes[0].getNodeAngle()));
     masNodes[0].setY(-radius + masNodes[0].getNodeR() * std::sin(masNodes[0].getNodeAngle()));
+    masNodes[0].isPrint = true;
     int countConnectZero = 0;
     for(int i = 0; i < count_nodes; ++i){
         if(connection_matrix[masNodes[0].getNode_num()][masNodes[i].getNode_num()])
@@ -18,19 +28,16 @@ void Widget::printEllipseGraph3(){
     for(int i = 0; i < count_nodes; ++i){
         if(connection_matrix[masNodes[0].getNode_num()][masNodes[i].getNode_num()]){
             currentAngle += 2 * PI / countConnectZero;
-            masNodes[i].isPrint = true;
             masNodes[i].setNodeR(currentR);
             masNodes[i].setNodeAngle(currentAngle);
             masNodes[i].setX(-radius + masNodes[i].getNodeR() * std::cos(masNodes[i].getNodeAngle()));
             masNodes[i].setY(-radius + masNodes[i].getNodeR() * std::sin(masNodes[i].getNodeAngle()));
+            masNodes[i].isPrint = true;
             printedNodes.push_back(masNodes[i]);
         }
     }
-    int countNodesWithoutConnects = 0;
-    for(int i = 0; i < count_nodes; i++)
-        if(!masNodes[i].getDegree())
-            ++countNodesWithoutConnects;
-    while(printedNodes.size() < count_nodes - countNodesWithoutConnects){ // добавить вершины с нулевыми связями?
+    bool isEnd = false;
+    while(!isEnd){ // добавить вершины с нулевыми связями?
         std::vector <class Node> readyToPrint;
         for(int i = 0; i < count_nodes; ++i){
             bool isContinue = false;
@@ -50,8 +57,13 @@ void Widget::printEllipseGraph3(){
                     readyToPrint.push_back(masNodes[i]);
             }
         }
-        currentR *= 2;
-        bool placeNodes[readyToPrint.size()];
+        if(!readyToPrint.size())
+            isEnd = true;
+        std::vector <bool> placeNodes(readyToPrint.size());
+        if(currentR * 2 < 400)
+            currentR *= 2;
+        else
+            currentR += 400;
         for(size_t i = 0; i < readyToPrint.size(); ++i)
             placeNodes[i] = false;
         for(size_t i = 0; i < readyToPrint.size(); ++i){
@@ -84,33 +96,12 @@ void Widget::printEllipseGraph3(){
                 if(masNodes[q].getNode_num() == readyToPrint[i].getNode_num()){
                     masNodes[q].setX(readyToPrint[i].getX());
                     masNodes[q].setY(readyToPrint[i].getY());
+                    masNodes[q].isPrint = true;
                 }
         }
-        for(int i = 0; i < readyToPrint.size(); ++i){
+        for(size_t i = 0; i < readyToPrint.size(); ++i){
             printedNodes.push_back(readyToPrint[i]);
         }
-        while(!readyToPrint.size())
-            readyToPrint.pop_back();
-    }
-    printEllipseNodes();
-    //printEllipseLines();
-}
-
-void Widget::printEllipseGraph(){ // вершина определяется в полярных координатах
-    int currentR = 200;
-    int nodesDistance = 100;
-    for(int i = 0; i < count_nodes; ++i){
-        int n = 2 * PI * currentR / nodesDistance;
-        int j = 0;
-        for(; j < n && i < count_nodes; ++j, ++i){
-            double currentAngle = PI * 2 * j / n + currentAngle / 100; // последнее слагаемое - чтобы не стояли на одной линии
-            masNodes[i].setNodeAngle(currentAngle);                      // а немного закручивались по спирали
-            masNodes[i].setNodeR(currentR);
-            masNodes[i].setX(-radius + masNodes[i].getNodeR() * std::cos(masNodes[i].getNodeAngle()));
-            masNodes[i].setY(-radius + masNodes[i].getNodeR() * std::sin(masNodes[i].getNodeAngle()));
-        }
-        currentR += 200;
-        --i;
     }
     printEllipseNodes();
     printEllipseLines();
@@ -118,22 +109,23 @@ void Widget::printEllipseGraph(){ // вершина определяется в 
 
 void Widget::printEllipseNodes(){
     for(int i = 0; i < count_nodes; ++i){
-        scene->addEllipse(masNodes[i].getX(), masNodes[i].getY(), radius * 2, radius * 2, QPen(), QBrush(Qt::black));
-        QGraphicsTextItem *text;
-        int currentNum = masNodes[i].getNode_num();
-        int countDigit = 0;
-        int tempCurrentNum = currentNum;
-        for(;tempCurrentNum; ++countDigit){
-            tempCurrentNum /= 10;
-        }
-        if(!countDigit){            masNodes[i].setX(-radius + masNodes[i].getNodeR() * std::cos(masNodes[i].getNodeAngle()));
-            masNodes[i].setY(-radius + masNodes[i].getNodeR() * std::sin(masNodes[i].getNodeAngle()));
-            text = scene->addText(QString("0"));
-            text->setPos(masNodes[i].getX() + radius * 3 + 7, masNodes[i].getY() - radius * 3);
-        }
-        for(int k = countDigit; k > 0; --k, currentNum /= 10){
-            text = scene->addText(QString(currentNum % 10 + '0'));
-            text->setPos(masNodes[i].getX() + radius * 3 + k * 7, masNodes[i].getY() - radius * 3);
+        if(masNodes[i].isPrint){
+            scene->addEllipse(masNodes[i].getX(), masNodes[i].getY(), radius * 2, radius * 2, QPen(), QBrush(Qt::black));
+            QGraphicsTextItem *text;
+            int currentNum = masNodes[i].getNode_num();
+            int countDigit = 0;
+            int tempCurrentNum = currentNum;
+            for(;tempCurrentNum; ++countDigit){
+                tempCurrentNum /= 10;
+            }
+            if(!countDigit){
+                text = scene->addText(QString("0"));
+                text->setPos(masNodes[i].getX() + radius * 3 + 7, masNodes[i].getY() - radius * 3);
+            }
+            for(int k = countDigit; k > 0; --k, currentNum /= 10){
+                text = scene->addText(QString(currentNum % 10 + '0'));
+                text->setPos(masNodes[i].getX() + radius * 3 + k * 7, masNodes[i].getY() - radius * 3);
+            }
         }
     }
 }
@@ -142,7 +134,8 @@ void Widget::printEllipseLines(){
     for(int i = 0; i < count_nodes; ++i){
         for(int j = 0; j < count_nodes; ++j){
             pen.setColor(Qt::GlobalColor(rand() % 10 + 1));
-            if(connection_matrix[masNodes[i].getNode_num()][masNodes[j].getNode_num()] == 1)
+            if(connection_matrix[masNodes[i].getNode_num()][masNodes[j].getNode_num()] == 1
+                    && masNodes[i].isPrint && masNodes[j].isPrint)
                 scene->addLine(masNodes[i].getX() + radius, masNodes[i].getY() + radius,
                                masNodes[j].getX() + radius, masNodes[j].getY() + radius, pen);
         }
@@ -154,8 +147,9 @@ Widget::Widget(QWidget *parent, bool** connection_matrix, int count_nodes) : QWi
     this->count_nodes = count_nodes;
     initMasNodes();
     for(int i = 0; i < count_nodes; i++){
-        masNodes[i].setY(1000);
-        masNodes[i].setX(1000);
+        masNodes[i].setY(1000 + i * 10);
+        masNodes[i].setX(-1000);
+        masNodes[i].isPrint = false;
     }
     btn_close = new QPushButton("close", this);
     scene = new QGraphicsScene;
@@ -164,7 +158,7 @@ Widget::Widget(QWidget *parent, bool** connection_matrix, int count_nodes) : QWi
     vlayout->addWidget(view);
     vlayout->addWidget(btn_close);
     connect(btn_close, SIGNAL(clicked()), this, SLOT(close()));
-    printEllipseGraph3();
+    printEllipseGraph();
 }
 
 Widget::~Widget(){
