@@ -54,7 +54,7 @@ class Widget : public QWidget{
     QPushButton* btn_close;
     void initMasNodes();
     void printEllipseGraph();
-    void printEllipseGraph2();
+    void printEllipseGraph3();
     void printEllipseNodes();
     void printEllipseLines();
 public:
