@@ -11,12 +11,12 @@
 #include <QGraphicsTextItem>
 #include <QLineEdit>
 #include <QLabel>
+#include <QVector>
+#include <QRect>
 
 class Widget : public QWidget{
     Q_OBJECT
     static const int radius = 5;
-public:
-    Widget(QWidget *parent = 0);
     QGraphicsScene* scene;
     QGraphicsView* view;
     QPushButton* btnClose;
@@ -33,8 +33,12 @@ public:
     QLabel* lblY1;
     QLabel* lblY2;
     QLabel* lblY3;
+    QVector<class Shape*> shapes;
+public:
+    Widget(QWidget *parent = 0); 
     friend class Parallelogram;
-    ~Widget();
+    friend class Ellipse;
+    ~Widget();   
 };
 
 #endif // WIDGET_H

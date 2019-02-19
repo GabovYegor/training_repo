@@ -45,13 +45,15 @@ public:
 };
 
 class Ellipse: public Shape{
+    std::vector <class Point> points;
+    unsigned id;
 public:
     Ellipse(Point, Point ,Point, std::string);
     Ellipse(){}
-    void rotate(double){}
-    void multiplicateCoordinate(unsigned){}
-    void changeCoordinate(std::vector <class Point>&){}
-    void print(class Widget&){}
+    void rotate(double) override{}
+    void multiplicateCoordinate(unsigned) override;
+    void changeCoordinate(std::vector <class Point>&) override;
+    void print(class Widget&) override;
 };
 
 #endif // SHAPE_H

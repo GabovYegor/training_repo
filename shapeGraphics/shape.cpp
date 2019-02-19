@@ -18,7 +18,6 @@ Point& Point::operator=(Point& point){
     return *this;
 }
 
-
 std::ostream& operator<<(std::ostream& out, const Point& point){
     out << "Point X: " << point.x << " Point Y: " << point.y << std::endl;
     return out;
@@ -36,6 +35,7 @@ Parallelogram::Parallelogram(Point point1 = Point(0, 0), Point point2 = Point(0,
 void Parallelogram::changeCoordinate(std::vector<class Point>& newPoints){ // аргументы по умолчанию?
     for(unsigned i = 0; i < newPoints.size(); ++i)
         points[i] = newPoints[i];
+    points.push_back(Point(points[2].x - points[1].x + points[0].x, points[2].y - points[1].y + points[0].y));
 }
 
 void Parallelogram::multiplicateCoordinate(unsigned k = 1){
@@ -50,7 +50,7 @@ void Parallelogram::rotate(double angle){
         double length = sqrt(pow(points[0].x - points[i].x, 2) + pow(points[0].y - points[i].y, 2));
         if(points[i].x > points[0].x){
             points[i].x = length * cos(acos(fabs(points[0].x - points[i].x / length)) + angle * PI / 180);
-            points[i].y = length * sin(asin(fabs(points[0].y - points[i].y / length)) + angle * PI / 180); // если yi > y0
+            points[i].y = length * sin(asin(fabs(points[0].y - points[i].y / length)) + angle * PI / 180);
         }
         else{
             points[i].x = length * cos(acos(fabs(points[0].x - points[i].x / length)) * 2.25 + angle * PI / 180); // 2.25???
@@ -58,4 +58,29 @@ void Parallelogram::rotate(double angle){
         }
     }
 }
+
+Ellipse::Ellipse(Point centre, Point point1, Point point2, std::string color): id(Shape::id){
+    this->color = color;
+    points.push_back(centre);
+    points.push_back(point1);
+    points.push_back(point2);
+    points.push_back(Point(points[0].x - points[1].x, points[0].y));
+    points.push_back(Point(points[0].x, points[0].y - points[2].y));
+}
+
+void Ellipse::changeCoordinate(std::vector<Point>& newPoints){
+    for(unsigned i = 0; i < newPoints.size(); ++i){
+        points[i] = newPoints[i];
+    }
+    points.push_back(Point(points[0].x - points[1].x, points[0].y));
+    points.push_back(Point(points[0].x, points[0].y - points[2].y));
+}
+
+void Ellipse::multiplicateCoordinate(unsigned k){
+    for(unsigned i = 0; i < points.size(); ++i){
+        points[i].x *= k;
+        points[i].y *= k;
+    }
+}
+
 
