@@ -6,36 +6,56 @@ std::string Shape::defaultColor = "white";
 std::ostream& operator<<(std::ostream& out, const Parallelogram& parallelogram){
     out << "COLOR: " << parallelogram.color << std::endl;
     out << "ID: " << parallelogram.id << std::endl;
-    out << "CENTRE: " << parallelogram.centre << "Point 1: " << parallelogram.point1 << "Point 2: " << parallelogram.point2;
+    for(unsigned i = 0; i < parallelogram.points.size(); ++i){
+        std::cout << "Point " << i << " " << parallelogram.points[i] << std::endl;
+    }
     return out;
 }
+
+Point& Point::operator=(Point& point){
+    this->x = point.x;
+    this->y = point.y;
+    return *this;
+}
+
 
 std::ostream& operator<<(std::ostream& out, const Point& point){
     out << "Point X: " << point.x << " Point Y: " << point.y << std::endl;
     return out;
 }
 
-Parallelogram::Parallelogram(Point centre = Point(0, 0), Point point1 = Point(0, 0), Point point2 = Point(0, 0), std::string color = defaultColor)
-            : id(Shape::id), centre(centre), point1(point1), point2(point2){
+Parallelogram::Parallelogram(Point point1 = Point(0, 0), Point point2 = Point(0, 0), Point point3 = Point(0, 0), std::string color = defaultColor)
+            : id(Shape::id){
     this->color = color;
+    points.push_back(point1);
+    points.push_back(point2);
+    points.push_back(point3);
+    points.push_back(Point(point3.x - point2.x + point1.x, point3.y - point2.y + point1.y));
 }
 
-void Parallelogram::changeCoordinate(Point newCentre, Point newPoint1, Point newPoint2){ // аргументы по умолчанию?
-    centre = newCentre;
-    point1 = newPoint1;
-    point2 = newPoint2;
+void Parallelogram::changeCoordinate(std::vector<class Point>& newPoints){ // аргументы по умолчанию?
+    for(unsigned i = 0; i < newPoints.size(); ++i)
+        points[i] = newPoints[i];
 }
 
 void Parallelogram::multiplicateCoordinate(unsigned k = 1){
-    point1.x = centre.x + (point1.x - centre.x) * k;
-    point1.y = centre.y + (point1.y - centre.y) * k;
-    point2.x = centre.x + (point2.x - centre.x) * k;
-    point2.y = centre.y + (point2.y - centre.y) * k;
+    for(unsigned i = 0; i < points.size(); ++i){
+        points[i].x *= k;
+        points[i].y *= k;
+    }
 }
 
 void Parallelogram::rotate(double angle){
-    point1.x = pow(point1.x - centre.x, 2) * cos(angle);
-    point1.y = pow(point1.y - centre.y, 2) * sin(angle);
-    point2.x = pow(point2.x - centre.x, 2) * cos(angle);
-    point2.y = pow(point2.y - centre.y, 2) * sin(angle);
+    for(unsigned i = 1; i < points.size(); ++i){
+        double length = sqrt(pow(points[0].x - points[i].x, 2) + pow(points[0].y - points[i].y, 2));
+        if(points[i].x > points[0].x){
+            points[i].x = length * cos(acos(fabs(points[0].x - points[i].x / length)) + angle * PI / 180);
+            points[i].y = length * sin(asin(fabs(points[0].y - points[i].y / length)) + angle * PI / 180); // если yi > y0
+        }
+        else{
+            points[i].x = length * cos(acos(fabs(points[0].x - points[i].x / length)) * 2.25 + angle * PI / 180); // 2.25???
+            points[i].y = length * sin(asin(fabs(points[0].y - points[i].y / length)) * 2.25 + angle * PI / 180); // завис от длины
+        }
+    }
 }
+
