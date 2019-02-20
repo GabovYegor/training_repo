@@ -16,7 +16,6 @@ public:
 public:
     Point(int x = 0, int y = 0): x(x), y(y){}
     friend std::ostream& operator<<(std::ostream&, const Point&);
-    friend class Parallelogram;
     Point& operator=(Point& point);
 };
 
