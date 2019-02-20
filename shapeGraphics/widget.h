@@ -35,10 +35,10 @@ class Widget : public QWidget{
     QLabel* lblY3;
     QVector<class Shape*> shapes;
 public:
-    Widget(QWidget *parent = 0); 
+    Widget(QWidget *parent = 0);
     friend class Parallelogram;
     friend class Ellipse;
-    ~Widget();   
+    ~Widget();
 };
 
 #endif // WIDGET_H

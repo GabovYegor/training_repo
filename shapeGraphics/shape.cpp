@@ -3,6 +3,11 @@
 unsigned Shape::id = 0;
 std::string Shape::defaultColor = "white";
 
+std::ostream& operator<<(std::ostream& out, const Point& point){
+    out << "X: " << point.x << " Y: " << point.y;
+    return out;
+}
+
 std::ostream& operator<<(std::ostream& out, const Parallelogram& parallelogram){
     out << "COLOR: " << parallelogram.color << std::endl;
     out << "ID: " << parallelogram.id << std::endl;
@@ -12,15 +17,18 @@ std::ostream& operator<<(std::ostream& out, const Parallelogram& parallelogram){
     return out;
 }
 
+std::ostream& operator<<(std::ostream& out, const Ellipse& ellipse){
+    out << "COLOR " << ellipse.color << std::endl;
+    out << "ID: " << ellipse.id << std::endl;
+    for(unsigned i = 0; i < ellipse.points.size(); ++i)
+        std::cout << "Point: " << i << ellipse.points[i] << std::endl;
+    return out;
+}
+
 Point& Point::operator=(Point& point){
     this->x = point.x;
     this->y = point.y;
     return *this;
-}
-
-std::ostream& operator<<(std::ostream& out, const Point& point){
-    out << "Point X: " << point.x << " Point Y: " << point.y << std::endl;
-    return out;
 }
 
 Parallelogram::Parallelogram(Point point1 = Point(0, 0), Point point2 = Point(0, 0), Point point3 = Point(0, 0), std::string color = defaultColor)
@@ -35,7 +43,6 @@ Parallelogram::Parallelogram(Point point1 = Point(0, 0), Point point2 = Point(0,
 void Parallelogram::changeCoordinate(std::vector<class Point>& newPoints){ // аргументы по умолчанию?
     for(unsigned i = 0; i < newPoints.size(); ++i)
         points[i] = newPoints[i];
-    points.push_back(Point(points[2].x - points[1].x + points[0].x, points[2].y - points[1].y + points[0].y));
 }
 
 void Parallelogram::multiplicateCoordinate(unsigned k = 1){
@@ -82,5 +89,3 @@ void Ellipse::multiplicateCoordinate(unsigned k){
         points[i].y *= k;
     }
 }
-
-

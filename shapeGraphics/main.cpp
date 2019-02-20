@@ -3,20 +3,10 @@
 
 int main(int argc, char *argv[]){
     QApplication a(argc, argv);
-    Ellipse e(Point(0, 0), Point(100, 0), Point(0, 40), "blue");
-
     Widget w;
-//    std::vector<class Point> points;
-//    points.push_back(Point(100, 100));
-//    points.push_back(Point(300, 100));
-//    points.push_back(Point(250, 400));
-//    points.push_back(Point(50, 400));
-//    //p.changeCoordinate(points);
-//    //p.multiplicateCoordinate(2);
-
-//    p.rotate(120);
-    e.print(w);
-//    w.resize(400, 300);
+    Parallelogram parallelogram(Point(1, 1), Point(3, 3), Point(4, 4), "white");
+    Ellipse ellipse(Point(2, 3), Point(4, 8), Point(8, 2), "blue");
+    parallelogram.multiplicateCoordinate(4);
     w.show();
     return a.exec();
 }

@@ -49,37 +49,37 @@ Widget::Widget(QWidget *parent) : QWidget(parent){
     layout()->addItem(hlayout);
 }
 
-void Parallelogram::print(Widget& w){
-    w.scene->clear();
-    QGraphicsTextItem *text;
-    for(unsigned i = 0; i < points.size(); ++i){
-        w.scene->addEllipse(points[i].x, points[i].y, Widget::radius, Widget::radius, QPen(), QBrush(Qt::black));
-        text = w.scene->addText(QString(i + '0'));
-        text->setPos(points[i].x + 3, points[i].y);
-    }
-    w.scene->addLine(points[0].x + Widget::radius/2, points[0].y + Widget::radius/2,
-                     points[points.size() - 1].x + Widget::radius/2, points[points.size() -1].y + Widget::radius/2);
-    for(unsigned i = 1; i < points.size(); ++i){
-        w.scene->addLine(points[i - 1].x + Widget::radius/2, points[i - 1].y + Widget::radius/2,
-                        points[i].x + Widget::radius/2, points[i].y + Widget::radius/2);
-    }
-}
+//void Parallelogram::print(Widget& w){
+//    w.scene->clear();
+//    QGraphicsTextItem *text;
+//    for(unsigned i = 0; i < points.size(); ++i){
+//        w.scene->addEllipse(points[i].x, points[i].y, Widget::radius, Widget::radius, QPen(), QBrush(Qt::black));
+//        text = w.scene->addText(QString(i + '0'));
+//        text->setPos(points[i].x + 3, points[i].y);
+//    }
+//    w.scene->addLine(points[0].x + Widget::radius/2, points[0].y + Widget::radius/2,
+//                     points[points.size() - 1].x + Widget::radius/2, points[points.size() -1].y + Widget::radius/2);
+//    for(unsigned i = 1; i < points.size(); ++i){
+//        w.scene->addLine(points[i - 1].x + Widget::radius/2, points[i - 1].y + Widget::radius/2,
+//                        points[i].x + Widget::radius/2, points[i].y + Widget::radius/2);
+//    }
+//}
 
-void Ellipse::print(Widget& w){
-    w.scene->clear();
-    QGraphicsTextItem *text;
-    for(unsigned i = 0; i < points.size(); ++i){
-        w.scene->addEllipse(points[i].x, points[i].y, Widget::radius, Widget::radius, QPen(), QBrush(Qt::black));
-        text = w.scene->addText(QString(i + '0'));
-        text->setPos(points[i].x + 3, points[i].y);
-    }
-    w.scene->addLine(points[1].x + Widget::radius/2, points[1].y + Widget::radius/2,
-                     points[points.size() - 1].x + Widget::radius/2, points[points.size() -1].y + Widget::radius/2);
-    for(unsigned i = 2; i < points.size(); ++i){
-        w.scene->addLine(points[i - 1].x + Widget::radius/2, points[i - 1].y + Widget::radius/2,
-                        points[i].x + Widget::radius/2, points[i].y + Widget::radius/2);
-    }
-}
+//void Ellipse::print(Widget& w){
+//    w.scene->clear();
+//    QGraphicsTextItem *text;
+//    for(unsigned i = 0; i < points.size(); ++i){
+//        w.scene->addEllipse(points[i].x, points[i].y, Widget::radius, Widget::radius, QPen(), QBrush(Qt::black));
+//        text = w.scene->addText(QString(i + '0'));
+//        text->setPos(points[i].x + 3, points[i].y);
+//    }
+//    w.scene->addLine(points[1].x + Widget::radius/2, points[1].y + Widget::radius/2,
+//                     points[points.size() - 1].x + Widget::radius/2, points[points.size() -1].y + Widget::radius/2);
+//    for(unsigned i = 2; i < points.size(); ++i){
+//        w.scene->addLine(points[i - 1].x + Widget::radius/2, points[i - 1].y + Widget::radius/2,
+//                        points[i].x + Widget::radius/2, points[i].y + Widget::radius/2);
+//    }
+//}
 
 Widget::~Widget(){
 

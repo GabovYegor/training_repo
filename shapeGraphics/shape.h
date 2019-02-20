@@ -5,7 +5,6 @@
 #include <cmath>
 #include <string>
 #include <vector>
-#include "widget.h"
 
 #define PI 3.14159
 
@@ -21,18 +20,20 @@ public:
 
 class Shape{
 protected:
+    std::vector <class Point> points;
     std::string color;
     static unsigned id;
     static std::string defaultColor;
 public:
+    Shape(){
+        ++id;
+    }
     virtual void rotate(double) = 0;
     virtual void multiplicateCoordinate(unsigned) = 0;
     virtual void changeCoordinate(std::vector <class Point>&) = 0;
-    virtual void print(class Widget&) = 0;
 };
 
 class Parallelogram: public Shape{
-    std::vector <class Point> points;
     unsigned id;
 public:
     Parallelogram(Point, Point, Point, std::string);
@@ -40,20 +41,18 @@ public:
     void rotate(double);
     void multiplicateCoordinate(unsigned);
     void changeCoordinate(std::vector <class Point>&);
-    void print(class Widget&);
     friend std::ostream& operator<<(std::ostream&, const Parallelogram&);
 };
 
 class Ellipse: public Shape{
-    std::vector <class Point> points;
     unsigned id;
 public:
     Ellipse(Point, Point ,Point, std::string);
     Ellipse(){}
-    void rotate(double) override{}
-    void multiplicateCoordinate(unsigned) override;
-    void changeCoordinate(std::vector <class Point>&) override;
-    void print(class Widget&) override;
+    void rotate(double){}
+    void multiplicateCoordinate(unsigned);
+    void changeCoordinate(std::vector <class Point>&);
+    friend std::ostream& operator<<(std::ostream&, const Ellipse&);
 };
 
 #endif // SHAPE_H
