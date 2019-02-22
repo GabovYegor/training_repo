@@ -142,7 +142,7 @@ void Widget::printEllipseLines(){
     }
 }
 
-Widget::Widget(QWidget *parent, bool** connection_matrix, int count_nodes) : QWidget(parent){
+Widget::Widget(QWidget *parent, bool**& connection_matrix, int count_nodes) : QWidget(parent){
     this->connection_matrix = connection_matrix;
     this->count_nodes = count_nodes;
     initMasNodes();
@@ -165,6 +165,7 @@ Widget::~Widget(){
     for(int i = 0; i < count_nodes; ++i)
         delete[] connection_matrix[i];
     delete[] connection_matrix;
+    delete[] masNodes;
 }
 
 int compare(const void* a, const void* b){

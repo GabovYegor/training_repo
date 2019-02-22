@@ -56,7 +56,7 @@ class Widget : public QWidget{
     void printEllipseNodes();
     void printEllipseLines();
 public:
-    Widget(QWidget *parent, bool**, int);
+    Widget(QWidget *parent, bool**&, int);
     ~Widget();
 };
 
